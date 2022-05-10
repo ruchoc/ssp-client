@@ -1,43 +1,13 @@
 <template>
   <a-layout class="layout">
     <a-layout-header>
+      <home-filled @click="$router.push('/')" style="font-size: 32px" />
       <a-input-search
-        v-model:value="searchWords"
+        v-model:value="searchText"
         placeholder="输入关键字"
         style="width: 45%"
       />
-      <div v-if="!isLogin" class="btn-box">
-        <a-button @click="$router.push('/register')">注册</a-button>
-        <a-button type="primary" @click="$router.push('/login')">登录</a-button>
-      </div>
-      <div v-else class="user-box">
-        <a-avatar>
-          <template #icon><UserOutlined /></template>
-        </a-avatar>
-        <span id="hello">您好，</span>
-        <a-dropdown :trigger="['click']">
-          <a class="ant-dropdown-link" @click.prevent> username </a>
-          <template #overlay>
-            <a-menu>
-              <a-menu-item>
-                <a href="javascript:;">个人空间</a>
-              </a-menu-item>
-              <a-menu-item>
-                <a href="javascript:;">发布分享</a>
-              </a-menu-item>
-              <a-menu-item>
-                <a href="javascript:;">我的关注</a>
-              </a-menu-item>
-              <a-menu-item>
-                <a href="javascript:;">设置</a>
-              </a-menu-item>
-              <a-menu-item>
-                <a href="javascript:;" @click="signout">登出</a>
-              </a-menu-item>
-            </a-menu>
-          </template>
-        </a-dropdown>
-      </div>
+      <UserBox></UserBox>
     </a-layout-header>
     <a-layout-content>
       <a-tabs v-model:activeKey="activeKey" type="card" @change="onTabChange">
@@ -47,13 +17,22 @@
             :key="item.id"
             style="margin-bottom: 10px"
           >
-            <template #title
-              ><span class="title">{{ item.title }}</span></template
-            >
-            <template #extra
-              ><a href="javascript:;">{{ item.author }}</a></template
-            >
-            <p class="content">{{ item.content }}</p>
+            <a-card-meta>
+              <template #title>
+                <span class="content-title">{{ item.title }}</span></template
+              >
+              <template #avatar>
+                <div class="author">
+                  <a-avatar>
+                    <template #icon></template> </a-avatar
+                  >{{ item.author }}
+                </div></template
+              >
+              <template #description>
+                <div class="content-text">
+                  {{ item.content }}<img :src="item.picUrlList[0]" /></div
+              ></template>
+            </a-card-meta>
           </a-card>
         </a-tab-pane>
       </a-tabs>
@@ -62,20 +41,11 @@
 </template>
 
 <script setup>
-import { ref, watchEffect } from "vue";
+import { ref } from "vue";
 import { message } from "ant-design-vue";
+import { HomeFilled } from "@ant-design/icons-vue";
+import UserBox from "@/components/UserBox";
 
-// 用户栏
-import { UserOutlined } from "@ant-design/icons-vue";
-import { isLogin, getCurrentUser } from "@/hooks/user";
-function signout() {
-  isLogin.value = false;
-}
-watchEffect(() => {
-  if (isLogin.value) {
-    getCurrentUser();
-  }
-});
 
 // 分享列表
 import { shareList } from "@/hooks/share";
@@ -93,7 +63,7 @@ const tabList = [
     tab: "最新",
   },
 ];
-let searchWords = ref("");
+let searchText = ref("");
 let activeKey = ref("1");
 function onTabChange(activeKey) {}
 </script>
@@ -105,32 +75,31 @@ function onTabChange(activeKey) {}
     display: flex;
     align-items: center;
     justify-content: space-between;
-
-    .ant-btn {
-      margin-right: 15px;
-    }
-
-    .user-box {
-      #hello {
-        padding-left: 15px;
-      }
-    }
   }
 
   .ant-layout-content {
     background-color: #fff;
     padding: 25px 20%;
 
-    .title {
-      cursor: pointer;
+    .author {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
-    .content {
-      font-size: 24px;
-      padding-left: 15px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+    .content-title {
+      font-size: 18px;
+      font-weight: 1100;
+    }
+
+    .content-text {
+      color: #333;
+      font-size: 16px;
+      img {
+        float: right;
+        max-height: 200px;
+        max-width: 240px;
+      }
     }
   }
 }

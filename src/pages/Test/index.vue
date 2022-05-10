@@ -1,30 +1,48 @@
 <template>
-  <a-avatar :size="64">
-    <template #icon><UserOutlined /></template>
-  </a-avatar>
-  <a-avatar size="large">
-    <template #icon><UserOutlined /></template>
-  </a-avatar>
-  <a-avatar>
-    <template #icon><UserOutlined /></template>
-  </a-avatar>
-  <a-avatar size="small">
-    <template #icon><UserOutlined /></template>
-  </a-avatar>
-  <br />
-  <a-avatar shape="square" :size="64">
-    <template #icon><UserOutlined /></template>
-  </a-avatar>
-  <a-avatar shape="square" size="large">
-    <template #icon><UserOutlined /></template>
-  </a-avatar>
-  <a-avatar shape="square">
-    <template #icon><UserOutlined /></template>
-  </a-avatar>
-  <a-avatar shape="square" size="small">
-    <template #icon><UserOutlined /></template>
-  </a-avatar>
+  <a-form
+    :model="formState"
+    name="basic"
+    :label-col="{ span: 8 }"
+    :wrapper-col="{ span: 16 }"
+    autocomplete="off"
+    @finish="onFinish"
+    @finishFailed="onFinishFailed"
+  >
+    
+
+    <a-form-item name="remember" :wrapper-col="{ offset: 8, span: 16 }">
+      <a-checkbox v-model:checked="formState.remember">Remember me</a-checkbox>
+    </a-form-item>
+
+    <a-form-item :wrapper-col="{ offset: 8, span: 16 }">
+      <a-button type="primary" html-type="submit">Submit</a-button>
+    </a-form-item>
+  </a-form>
 </template>
-<script setup>
-import { UserOutlined } from '@ant-design/icons-vue';
+<script>
+import { defineComponent, reactive } from 'vue';
+export default defineComponent({
+  setup() {
+    const formState = reactive({
+      username: '',
+      password: '',
+      remember: true,
+    });
+
+    const onFinish = values => {
+      console.log('Success:', values);
+    };
+
+    const onFinishFailed = errorInfo => {
+      console.log('Failed:', errorInfo);
+    };
+
+    return {
+      formState,
+      onFinish,
+      onFinishFailed,
+    };
+  },
+
+});
 </script>

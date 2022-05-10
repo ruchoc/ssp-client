@@ -1,6 +1,6 @@
 <template>
   <a-layout>
-    <a-card title="注册">
+    <a-card title="登录">
       <a-form
         ref="formRef"
         :model="formState"
@@ -51,9 +51,9 @@ const rules = {
   pass: [{ required: true, message: "请输入密码", trigger: "blur" }],
 };
 
-const handleFinish = (values) => {
+const handleFinish =async (values) => {
   try {
-    login(formState.user, formState.pass);
+    await login(formState.user, formState.pass);
     router.push("/");
   } catch (err) {
     console.error(err);

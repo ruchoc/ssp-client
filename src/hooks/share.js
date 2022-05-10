@@ -6,7 +6,7 @@ const shareList = ref([{
   author:'asd',
   title:'asd',
   content:'ddd',
-  picList:[],
+  picUrlList:['https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png'],
 }]);
 const share = reactive({});
 
