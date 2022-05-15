@@ -1,5 +1,8 @@
 <template>
   <a-layout>
+    <a-layout-header>
+      <home-filled @click="$router.push('/')" style="font-size: 32px" />
+    </a-layout-header>
     <a-card title="登录">
       <a-form
         ref="formRef"
@@ -28,11 +31,12 @@
 </template>
 
 <script setup>
-import { reactive, ref } from "vue";
+import { onMounted, reactive, ref } from "vue";
 import { message } from "ant-design-vue";
 import { useRouter } from "vue-router";
 const router = useRouter();
-import { login } from "@/hooks/user";
+import { login, userData, getCurrentUser, whetherLogin } from "@/hooks/user";
+import { HomeFilled } from "@ant-design/icons-vue";
 
 const formRef = ref(null);
 
@@ -51,7 +55,13 @@ const rules = {
   pass: [{ required: true, message: "请输入密码", trigger: "blur" }],
 };
 
-const handleFinish =async (values) => {
+onMounted(async () => {
+  if (await whetherLogin()) {
+    userData.isLogin = true;
+    router.push("/");
+  }
+});
+const handleFinish = async (values) => {
   try {
     await login(formState.user, formState.pass);
     router.push("/");
@@ -68,8 +78,13 @@ const resetForm = () => {
 
 <style lang="less" scoped>
 .ant-layout {
+  .ant-layout-header {
+    background-color: #eee;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
   height: 100%;
-
   .ant-card {
     width: 50%;
     margin: 100px auto;

@@ -29,19 +29,25 @@
             </template>
             我的分享
           </a-menu-item>
-          <a-menu-item key="4" @click="$router.push('/user/myFavorites')">
+          <a-menu-item key="4" @click="$router.push('/user/publishShare')">
+            <template #icon>
+              <plus-square-outlined />
+            </template>
+            发布分享
+          </a-menu-item>
+          <a-menu-item key="5" @click="$router.push('/user/myFavorites')">
             <template #icon>
               <read-outlined />
             </template>
             我的收藏
           </a-menu-item>
-          <a-menu-item key="5" @click="$router.push('/user/myIdols')">
+          <a-menu-item key="6" @click="$router.push('/user/myIdols')">
             <template #icon>
               <heart-outlined />
             </template>
             关注信息
           </a-menu-item>
-          <a-menu-item key="6" @click="$router.push('/user/searchUsers')">
+          <a-menu-item key="7" @click="$router.push('/user/searchUsers')">
             <template #icon>
               <aim-outlined />
             </template>
@@ -74,6 +80,7 @@ import {
   ReadOutlined,
   HeartOutlined,
   AimOutlined,
+  PlusSquareOutlined,
 } from "@ant-design/icons-vue";
 import UserBox from "@/components/UserBox";
 </script>

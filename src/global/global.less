@@ -1,7 +1,19 @@
-#app,body,html {
+#app,
+body,
+html {
   height: 100%;
 }
 
-.ant-layout{
-  height: 100%;
+.ant-layout {
+  min-height: 100% !important;
+}
+
+.clearfix:after {
+  content: "";
+  display: block;
+  clear: both;
+  height: 0;
+}
+.clearfix {
+  zoom: 1;
 }

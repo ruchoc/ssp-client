@@ -8,4 +8,12 @@ async function uploadAvatar(userId, avatar) {
   // console.log(res);
 }
 
-export { uploadAvatar };
+async function uploadShare(shareId, fileList) {
+  const formData = new FormData();
+  formData.append("shareId", shareId);
+  fileList.forEach((file) => formData.append("pic", file.originFileObj));
+  const res = await axios.post("/file/uoloadpic", formData);
+  // console.log(res);
+}
+
+export { uploadAvatar, uploadShare };

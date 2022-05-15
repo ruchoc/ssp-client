@@ -10,62 +10,40 @@
       <UserBox></UserBox>
     </a-layout-header>
     <a-layout-content>
-      <a-tabs v-model:activeKey="activeKey" type="card" @change="onTabChange">
-        <a-tab-pane v-for="one in tabList" :key="one.key" :tab="one.tab">
-          <a-card
-            v-for="item in shareList"
-            :key="item.id"
-            style="margin-bottom: 10px"
-          >
-            <a-card-meta>
-              <template #title>
-                <span class="content-title">{{ item.title }}</span></template
-              >
-              <template #avatar>
-                <div class="author">
-                  <a-avatar>
-                    <template #icon></template> </a-avatar
-                  >{{ item.author }}
-                </div></template
-              >
-              <template #description>
-                <div class="content-text">
-                  {{ item.content }}<img :src="item.picUrlList[0]" /></div
-              ></template>
-            </a-card-meta>
-          </a-card>
-        </a-tab-pane>
-      </a-tabs>
+      <a-menu v-model:selectedKeys="selectedKeys" mode="horizontal">
+        <a-menu-item key="all"> 全部 </a-menu-item>
+        <a-menu-item key="new"> 最新 </a-menu-item>
+        <a-menu-item key="like"> 点赞排行 </a-menu-item>
+        <a-menu-item key="search"> 搜一搜 </a-menu-item>
+      </a-menu>
+      <router-view></router-view>
     </a-layout-content>
   </a-layout>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import { message } from "ant-design-vue";
 import { HomeFilled } from "@ant-design/icons-vue";
 import UserBox from "@/components/UserBox";
+import { useRouter } from "vue-router";
 
+const searchText = ref("");
+const selectedKeys = ref(["all"]);
+const $router = useRouter();
 
-// 分享列表
-import { shareList } from "@/hooks/share";
-const tabList = [
-  {
-    key: "1",
-    tab: "搜一搜",
+watch(
+  selectedKeys,
+  (selectedKeys) => {
+    const key = selectedKeys[0];
+    switch (key) {
+      case "all":
+        $router.push("/allShares");
+        break;
+    }
   },
-  {
-    key: "2",
-    tab: "点赞榜",
-  },
-  {
-    key: "3",
-    tab: "最新",
-  },
-];
-let searchText = ref("");
-let activeKey = ref("1");
-function onTabChange(activeKey) {}
+  { immediate: true }
+);
 </script>
 
 <style lang="less" scoped>
@@ -79,28 +57,7 @@ function onTabChange(activeKey) {}
 
   .ant-layout-content {
     background-color: #fff;
-    padding: 25px 20%;
-
-    .author {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .content-title {
-      font-size: 18px;
-      font-weight: 1100;
-    }
-
-    .content-text {
-      color: #333;
-      font-size: 16px;
-      img {
-        float: right;
-        max-height: 200px;
-        max-width: 240px;
-      }
-    }
+    padding: 25px 15%;
   }
 }
 </style>

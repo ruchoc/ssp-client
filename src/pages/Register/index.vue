@@ -1,5 +1,8 @@
 <template>
   <a-layout>
+    <a-layout-header>
+      <home-filled @click="$router.push('/')" style="font-size: 32px" />
+    </a-layout-header>
     <a-card title="注册">
       <a-form
         ref="formRef"
@@ -39,6 +42,7 @@ import { reactive, ref } from "vue";
 import { message } from "ant-design-vue";
 import { useRouter } from "vue-router";
 import { register } from "@/hooks/user";
+import { HomeFilled } from "@ant-design/icons-vue";
 const router = useRouter();
 
 const formRef = ref(null);
@@ -87,8 +91,13 @@ const resetForm = () => {
 
 <style lang="less" scoped>
 .ant-layout {
+  .ant-layout-header {
+    background-color: #eee;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
   height: 100%;
-
   .ant-card {
     width: 50%;
     margin: 100px auto;

@@ -7,7 +7,12 @@
   <div v-else>
     <a-avatar
       style="cursor: pointer"
-      @click="$router.push({path:'/person',query:{id:userData.userBasicInfo.id}})"
+      @click="
+        $router.push({
+          path: '/person',
+          query: { id: userData.userBasicInfo.id },
+        })
+      "
       v-if="userData.userInfo.avatarUrl"
       :src="getAvatarUrl()"
     ></a-avatar>
@@ -21,13 +26,13 @@
           <a-menu-item @click="$router.push('/user/personalInfo')">
             <span>个人空间</span>
           </a-menu-item>
-          <a-menu-item>
+          <a-menu-item @click="$router.push('/user/publishShare')">
             <span>发布分享</span>
           </a-menu-item>
           <a-menu-item @click="$router.push('/user/myIdols')">
             <span>我的关注</span>
           </a-menu-item>
-          <a-menu-item>
+          <a-menu-item @click="$router.push('/user/myFavorites')">
             <span>我的收藏</span>
           </a-menu-item>
           <a-menu-item @click="$router.push('/user/account')">
@@ -43,21 +48,32 @@
 </template>
 
 <script setup>
-import { watchEffect } from "vue";
+import { onMounted, watchEffect } from "vue";
+import { message } from "ant-design-vue";
 import {
   userData,
   getCurrentUser,
   getCurrentUserInfo,
-  getAvatarUrl
+  getAvatarUrl,
+  logout,
+  whetherLogin,
 } from "@/hooks/user";
 function signout() {
-  userData.isLogin = false;
+  try {
+    logout();
+  } catch (err) {
+    console.error(err);
+    message.error("登出错误");
+  }
 }
+onMounted(async () => {
+  if (await whetherLogin()) userData.isLogin = true;
+  else userData.isLogin = false;
+});
 watchEffect(async () => {
   if (userData.isLogin) {
     await getCurrentUser();
     await getCurrentUserInfo();
-    console.log(userData);
   }
 });
 </script>

@@ -1,26 +1,35 @@
 import { createRouter, createWebHashHistory } from "vue-router";
 import Home from "@/pages/Home";
+import AllShares from "@/pages/Home/AllShares.vue";
+
 import Register from "@/pages/Register";
 import Login from "@/pages/Login";
 import User from "@/pages/User";
 import Admin from "@/pages/Admin";
-import Share from "@/pages/Share";
+
+import PublishShare from "@/pages/User/PublishShare.vue";
 import PersonalInfo from "@/pages/User/PersonalInfo.vue";
 import Account from "@/pages/User/Account.vue";
 import MyShares from "@/pages/User/MyShares.vue";
 import MyFavorites from "@/pages/User/MyFavorites.vue";
 import MyIdols from "@/pages/User/MyIdols.vue";
-import SearchUsers from '@/pages/User/SearchUsers.vue'
+import SearchUsers from "@/pages/User/SearchUsers.vue";
+
 import Person from "@/pages/Person";
+import Share from '@/pages/Share'
+
 import Test from "@/pages/Test";
 
-import {userData} from '@/hooks/user'
+import { userData } from "@/hooks/user";
 
 const routes = [
   {
     path: "/",
     name: "home",
     component: Home,
+    children: [
+      { path: "allShares", name: "allShares", component: AllShares },
+    ],
   },
   {
     path: "/register",
@@ -43,12 +52,8 @@ const routes = [
       { path: "myFavorites", name: "myFavorites", component: MyFavorites },
       { path: "myIdols", name: "myIdols", component: MyIdols },
       { path: "searchUsers", name: "searchUsers", component: SearchUsers },
+      { path: "publishShare", name: "publishShare", component: PublishShare },
     ],
-  },
-  {
-    path: "/share",
-    name: "share",
-    component: Share,
   },
   {
     path: "/admin",
@@ -59,6 +64,11 @@ const routes = [
     path: "/person",
     name: "person",
     component: Person,
+  },
+  {
+    path: "/share",
+    name: "share",
+    component: Share,
   },
   {
     path: "/test",
@@ -75,12 +85,15 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const nextRoute = [
     "personalInfo",
-    'user',
-    'account',
-    'searchUsers',
-    'myIdols',
+    "user",
+    "account",
+    "searchUsers",
+    "myIdols",
+    "publishShare",
+    "myShares",
+    "myFavorites",
   ];
-  let isLogin = userData.isLogin
+  let isLogin = userData.isLogin;
   if (nextRoute.indexOf(to.name) >= 0 && !isLogin) {
     next({
       path: "/login",

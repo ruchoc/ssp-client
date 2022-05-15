@@ -1,46 +1,53 @@
 <template>
-  <a-form
-    :model="formState"
-    name="basic"
-    :label-col="{ span: 8 }"
-    :wrapper-col="{ span: 16 }"
-    autocomplete="off"
-    @finish="onFinish"
-    @finishFailed="onFinishFailed"
+  <a-list
+    class="comment-list"
+    :header="`${data.length} replies`"
+    item-layout="horizontal"
+    :data-source="data"
   >
-    
-
-    <a-form-item name="remember" :wrapper-col="{ offset: 8, span: 16 }">
-      <a-checkbox v-model:checked="formState.remember">Remember me</a-checkbox>
-    </a-form-item>
-
-    <a-form-item :wrapper-col="{ offset: 8, span: 16 }">
-      <a-button type="primary" html-type="submit">Submit</a-button>
-    </a-form-item>
-  </a-form>
+    <template #renderItem="{ item }">
+      <a-list-item>
+        <a-comment :author="item.author" :avatar="item.avatar">
+          <template #actions>
+            <span v-for="(action, index) in item.actions" :key="index">{{ action }}</span>
+          </template>
+          <template #content>
+            <p>
+              {{ item.content }}
+            </p>
+          </template>
+          <template #datetime>
+            <a-tooltip :title="item.datetime.format('YYYY-MM-DD HH:mm:ss')">
+              <span>{{ item.datetime.fromNow() }}</span>
+            </a-tooltip>
+          </template>
+        </a-comment>
+      </a-list-item>
+    </template>
+  </a-list>
 </template>
 <script>
-import { defineComponent, reactive } from 'vue';
+import dayjs from 'dayjs';
+import { defineComponent } from 'vue';
+import relativeTime from 'dayjs/plugin/relativeTime';
+dayjs.extend(relativeTime);
 export default defineComponent({
   setup() {
-    const formState = reactive({
-      username: '',
-      password: '',
-      remember: true,
-    });
-
-    const onFinish = values => {
-      console.log('Success:', values);
-    };
-
-    const onFinishFailed = errorInfo => {
-      console.log('Failed:', errorInfo);
-    };
-
     return {
-      formState,
-      onFinish,
-      onFinishFailed,
+      data: [{
+        actions: ['Reply to'],
+        author: 'Han Solo',
+        avatar: 'https://joeschmoe.io/api/v1/random',
+        content: 'We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.',
+        datetime: dayjs().subtract(1, 'days'),
+      }, {
+        actions: ['Reply to'],
+        author: 'Han Solo',
+        avatar: 'https://joeschmoe.io/api/v1/random',
+        content: 'We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.',
+        datetime: dayjs().subtract(2, 'days'),
+      }],
+      dayjs,
     };
   },
 

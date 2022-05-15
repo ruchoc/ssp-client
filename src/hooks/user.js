@@ -1,8 +1,9 @@
 import axios from "@/global/axios";
 import { reactive } from "vue";
+import { isEmptyObject } from "@/global/utils";
 
 const userData = reactive({
-  isLogin: false,
+  isLogin: true,
   userBasicInfo: {},
   userInfo: {},
   searchUserList: [],
@@ -15,6 +16,12 @@ async function register(name, password) {
     name,
     password,
   });
+  // console.log(res);
+}
+
+async function logout() {
+  userData.isLogin = false;
+  const res = await axios.post("/user/signout");
   // console.log(res);
 }
 
@@ -46,8 +53,8 @@ async function getCurrentUserInfo() {
 async function getUser(id) {
   const res = await axios.get(`/user/getuser?userId=${id}`);
   // console.log(res);
-  const {data}=res
-  userData.searchBasicInfo={...data}
+  const { data } = res;
+  userData.searchBasicInfo = { ...data };
 }
 
 async function searchUser(name) {
@@ -60,8 +67,8 @@ async function searchUser(name) {
 async function getUserInfo(id) {
   const res = await axios.get(`/user/getuserinfo?userId=${id}`);
   // console.log(res);
-  const {data} = res
-  userData.searchInfo={...data}
+  const { data } = res;
+  userData.searchInfo = { ...data };
 }
 
 async function updateUserName(name) {
@@ -85,7 +92,13 @@ function getAvatarUrl(url = "") {
   return avatarPathPrefix + url;
 }
 
+const whetherLogin = async () => {
+  await getCurrentUser();
+  return !isEmptyObject(userData.userBasicInfo);
+};
+
 export {
+  userData,
   login,
   register,
   getCurrentUser,
@@ -96,6 +109,7 @@ export {
   updatePassword,
   updateUserInfo,
   searchUser,
-  userData,
   getAvatarUrl,
+  logout,
+  whetherLogin,
 };
