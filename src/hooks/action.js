@@ -28,7 +28,7 @@ async function publishComment(shareId, content) {
 
 async function getComment(shareId, begin, length) {
   begin--;
-	begin*=pageSize
+  begin *= pageSize;
   const res = await axios.get(
     `/comment/getcomment?shareId=${shareId}&begin=${begin}&length=${length}`
   );
@@ -48,14 +48,14 @@ async function publishReply(content, commentId, acceptUserId) {
   const res = await axios.post("/reply/publish", {
     content,
     commentId,
-		acceptUserId,
+    acceptUserId,
   });
   // console.log(res);
 }
 
 async function getReply(commentId, begin, length) {
   begin--;
-	begin*=pageSize
+  begin *= pageSize;
   const res = await axios.get(
     `/reply/getreply?commentId=${commentId}&begin=${begin}&length=${length}`
   );
@@ -71,25 +71,9 @@ async function getReplyTotal(commentId) {
   replyData.replyTotal = data;
 }
 
-async function collect(shareId) {
-  const res = await axios.post("/collect/add", { shareId });
-  // console.log(res);
-}
-
-async function deleteCollect(shareId) {
-  const res = await axios.delete(`/collect/cancel/${shareId}`);
-  // console.log(res);
-}
-
-async function getCollect() {
-  const res = await axios.get("/collect/get");
-  console.log(res);
-}
-
 export {
   commentData,
   replyData,
-  deleteCollect,
   deleteLike,
   getCommentTotal,
   getReplyTotal,
@@ -98,6 +82,4 @@ export {
   getComment,
   publishReply,
   getReply,
-  collect,
-  getCollect,
 };

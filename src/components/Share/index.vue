@@ -23,7 +23,7 @@
       <template #description
         ><p
           class="share-content"
-          style="cursor:pointer"
+          style="cursor: pointer"
           @click="
             $router.push({
               path: '/share',
@@ -88,9 +88,7 @@
 
 <script setup>
 import Comment from "./Comment.vue";
-import dayjs from "dayjs";
-import "dayjs/locale/zh-cn";
-dayjs.locale("zh-cn");
+import dayjs from "@/global/dayjs";
 import {
   LikeFilled,
   LikeOutlined,
@@ -104,13 +102,12 @@ import { getImageUrl } from "@/hooks/share";
 import {
   commentData,
   deleteLike,
-  deleteCollect,
   addLike,
-  collect,
   publishComment,
   getComment,
   getCommentTotal,
 } from "@/hooks/action";
+import { deleteCollect, collect } from "@/hooks/share";
 import { message } from "ant-design-vue";
 import { pageSize } from "@/global/config";
 

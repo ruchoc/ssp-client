@@ -16,7 +16,7 @@
       v-model:total="total"
       v-model:pageSize="pageSize"
       show-less-items
-      @change="pageChange"
+      @change='pageChange'
     />
   </div>
 </template>
@@ -24,7 +24,7 @@
 <script setup>
 import { pageSize } from "@/global/config";
 import Share from "@/components/Share";
-import { shareData, getPublicShareList, getShareTotal } from "@/hooks/share";
+import { shareData, getNewestShareList,getShareTotal } from "@/hooks/share";
 import { onMounted, ref } from "@vue/runtime-core";
 import { message } from "ant-design-vue";
 
@@ -35,7 +35,7 @@ onMounted(() => {
 });
 const getSharePage = async () => {
   try {
-    await getPublicShareList(current.value, pageSize);
+    await getNewestShareList(current.value, pageSize);
     await getShareTotal();
     total.value = shareData.shareTotal;
   } catch (err) {
@@ -43,9 +43,9 @@ const getSharePage = async () => {
     message.error("获取分享列表失败");
   }
 };
-const pageChange = () => {
-  getSharePage();
-};
+const pageChange=()=>{
+  getSharePage()
+}
 </script>
 
 <style lang="less" scoped>

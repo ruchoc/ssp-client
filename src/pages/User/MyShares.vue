@@ -53,6 +53,7 @@
         v-model:total="shareData.shareTotal"
         v-model:pageSize="pageSize"
         show-less-items
+        hideOnSinglePage
         @change="pageChange"
       />
     </div>
@@ -78,7 +79,7 @@
           { required: true, message: '请输入分享内容', trigger: 'blur' },
         ]"
       >
-        <a-textarea style="height: 200px" v-model:value="formState.content" />
+        <a-textarea style="height: 140px" v-model:value="formState.content" />
       </a-form-item>
       <a-form-item label="是否公开">
         <a-switch v-model:checked="checked"></a-switch>
@@ -87,10 +88,8 @@
   </a-modal>
 </template>
 <script setup>
-import dayjs from "dayjs";
+import dayjs from "@/global/dayjs";
 import { onMounted, ref, reactive, computed } from "vue";
-import relativeTime from "dayjs/plugin/relativeTime";
-dayjs.extend(relativeTime);
 import {
   getMyShareList,
   getMyShareTotal,

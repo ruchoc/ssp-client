@@ -44,8 +44,7 @@
 </template>
 
 <script setup>
-import dayjs from "dayjs";
-import "dayjs/locale/zh-cn";
+import dayjs from "@/global/dayjs";
 import { defineProps, defineEmits, onMounted, ref, toRefs } from "vue";
 import { getAvatarUrl } from "@/hooks/user";
 import { getReply, publishReply, replyData } from "@/hooks/action";
@@ -78,6 +77,7 @@ const onReply = async () => {
       commentId.value,
       reply.value.sendUserId
     );
+		replyContent.value=''
     emit("reply");
   } catch (err) {
     console.error(err);

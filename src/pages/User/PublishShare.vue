@@ -52,6 +52,7 @@ const onPublish = async () => {
     };
     const id = await publishShare(param);
     message.success("上传分享内容成功");
+    formState.content=''
     image.value.handleUpload(id);
   } catch (err) {
     console.error(err);

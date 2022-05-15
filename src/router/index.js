@@ -1,6 +1,9 @@
 import { createRouter, createWebHashHistory } from "vue-router";
 import Home from "@/pages/Home";
 import AllShares from "@/pages/Home/AllShares.vue";
+import NewShares from "@/pages/Home/NewShares.vue";
+import LikeShares from "@/pages/Home/LikeShares.vue";
+import SearchShares from "@/pages/Home/SearchShares.vue";
 
 import Register from "@/pages/Register";
 import Login from "@/pages/Login";
@@ -29,6 +32,9 @@ const routes = [
     component: Home,
     children: [
       { path: "allShares", name: "allShares", component: AllShares },
+      { path: "newShares", name: "newShares", component: NewShares },
+      { path: "likeShares", name: "likeShares", component: LikeShares },
+      { path: "searchShares", name: "searchShares", component: SearchShares },
     ],
   },
   {

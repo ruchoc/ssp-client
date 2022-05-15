@@ -26,7 +26,6 @@ const fileList = ref([]);
 let isPass;
 
 const beforeUpload = (file) => {
-  // setTimeout(()=>console.log(fileList.value),500)
   const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png";
   const isSmall = file.size / 1024 / 1024 < 5;
   if (!isJpgOrPng) {

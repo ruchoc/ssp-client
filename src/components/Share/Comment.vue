@@ -64,8 +64,7 @@
 
 <script setup>
 import Reply from "./Reply.vue";
-import dayjs from "dayjs";
-import "dayjs/locale/zh-cn";
+import dayjs from "@/global/dayjs";
 import { defineProps, onMounted, ref, toRefs } from "vue";
 import { getAvatarUrl } from "@/hooks/user";
 import {
@@ -99,7 +98,6 @@ const getReplyPage = async () => {
     await getReply(comment.value.id, current.value, pageSize);
 		await getReplyTotal(comment.value.id);
     total.value = replyData.replyTotal;
-		console.log(replyData);
   } catch (err) {
     console.error(err);
     message.error("获取回复信息失败");
