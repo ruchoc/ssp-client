@@ -51,6 +51,7 @@ const onPublish = async () => {
       state: formState.state,
     };
     const id = await publishShare(param);
+    if(id<0) throw new Error('分享内容有屏蔽因素')
     message.success("上传分享内容成功");
     formState.content=''
     image.value.handleUpload(id);
