@@ -7,6 +7,7 @@
       multiple
       :showUploadList="{ showPreviewIcon: false }"
       :maxCount="9"
+      @remove="onRemove"
     >
       <div v-if="fileList.length < 9">
         <plus-outlined />
@@ -17,14 +18,46 @@
 </template>
 
 <script setup>
+import { getImageUrl, deletePicture } from "@/hooks/share";
 import { message, Upload } from "ant-design-vue";
 import { PlusOutlined } from "@ant-design/icons-vue";
-import { ref, defineExpose } from "vue";
+import {
+  ref,
+  defineExpose,
+  defineProps,
+  toRefs,
+  onMounted,
+  computed,
+} from "vue";
 import { uploadShare } from "@/hooks/file";
 import { userData } from "@/hooks/user";
 const fileList = ref([]);
 let isPass;
 
+const props = defineProps({
+  pictureList: Array,
+});
+const { pictureList } = toRefs(props);
+const uploadList = computed(() => {
+  return fileList.value.filter((file) => file.originFileObj);
+});
+const removeList = ref([]);
+
+const onRemove = (file) => {
+  removeList.value.push(file);
+};
+onMounted(() => {
+  fileList.value = [];
+  if (pictureList.value.length == 0) return;
+  pictureList.value.forEach((pic) => {
+    const file = {
+      uid: pic.id,
+      thumbUrl: getImageUrl(pic.url),
+      status: "down",
+    };
+    fileList.value.push(file);
+  });
+});
 const beforeUpload = (file) => {
   const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png";
   const isSmall = file.size / 1024 / 1024 < 5;
@@ -42,7 +75,15 @@ const beforeUpload = (file) => {
   return false;
 };
 const handleUpload = async (shareId) => {
-  if (!isPass||fileList.value.length==0) {
+  removeList.value.forEach((file) => {
+    deletePicture(file.uid)
+      .then((value) => message.success("删除图片成功"))
+      .catch((err) => {
+        console.error(err);
+        message.error("删除图片失败");
+      });
+  });
+  if (!isPass || uploadList.value.length == 0) {
     isPass = true;
     return;
   }
@@ -51,7 +92,7 @@ const handleUpload = async (shareId) => {
     return;
   }
   try {
-    await uploadShare(shareId, fileList.value);
+    await uploadShare(shareId, uploadList.value);
     message.success("上传图像成功");
   } catch (err) {
     console.error(err);
@@ -61,7 +102,7 @@ const handleUpload = async (shareId) => {
 defineExpose({ handleUpload });
 </script>
 
-<style>
+<style lang="less" scoped>
 /* you can make up upload button and sample style by using stylesheets */
 .ant-upload-select-picture-card i {
   font-size: 32px;

@@ -93,6 +93,11 @@ async function deleteShare(shareId) {
   // console.log(res);
 }
 
+async function deletePicture(id) {
+  const res = await axios.get(`/share/deletepicture?id=${id}`);
+  // console.log(res);
+}
+
 async function updateShare(id, content) {
   const res = await axios.post("/share/updatecontent", { id, content });
   // console.log(res);
@@ -152,6 +157,7 @@ async function getCollectTotal() {
 
 export {
   shareData,
+  deletePicture,
   getHotSearch,
   getSearchShareTotal,
   collect,

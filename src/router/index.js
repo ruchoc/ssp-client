@@ -19,7 +19,7 @@ import MyIdols from "@/pages/User/MyIdols.vue";
 import SearchUsers from "@/pages/User/SearchUsers.vue";
 
 import Person from "@/pages/Person";
-import Share from '@/pages/Share'
+import Share from "@/pages/Share";
 
 import Test from "@/pages/Test";
 

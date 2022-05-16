@@ -84,10 +84,14 @@
       <a-form-item label="是否公开">
         <a-switch v-model:checked="checked"></a-switch>
       </a-form-item>
+      <a-form-item label="上传图片">
+        <Image v-if="modalVisible" ref="image" :pictureList='formState.pictureList'></Image>
+      </a-form-item>
     </a-form>
   </a-modal>
 </template>
 <script setup>
+import Image from "@/components/Update/Image.vue";
 import dayjs from "@/global/dayjs";
 import { onMounted, ref, reactive, computed } from "vue";
 import {
@@ -114,15 +118,18 @@ const formState = reactive({
   id: "",
   content: "",
   state: "public",
+  pictureList:[],
 });
 const current = ref(1);
 const modalVisible = ref(false);
 const form = ref(null);
+const image = ref(null);
 
 const openModal = (share) => {
   formState.id = share.id;
   formState.content = share.content;
   formState.state = share.state;
+  formState.pictureList=share.pictureList
   modalVisible.value = true;
 };
 const onEdit = async () => {
@@ -138,6 +145,7 @@ const onEdit = async () => {
   try {
     await updateShare(formState.id, formState.content);
     await setShareState(formState.id, formState.state);
+    await image.value.handleUpload(formState.id);
     getPage();
   } catch (err) {
     console.error(err);
