@@ -38,6 +38,7 @@
   >
     <a-textarea
       v-model:value="replyContent"
+      :maxlength='100'
       placeholder="输入内容"
     ></a-textarea>
   </a-modal>
@@ -46,7 +47,7 @@
 <script setup>
 import dayjs from "@/global/dayjs";
 import { defineProps, defineEmits, onMounted, ref, toRefs } from "vue";
-import { getAvatarUrl } from "@/hooks/user";
+import { getAvatarUrl,userData } from "@/hooks/user";
 import { getReply, publishReply, replyData } from "@/hooks/action";
 import { message } from "ant-design-vue";
 
@@ -66,6 +67,10 @@ const replyVisible = ref(false);
 const replyContent = ref("");
 
 const onReply = async () => {
+  if (!userData.isLogin) {
+    message.info("请先登录");
+    return;
+  }
   replyContent.value = replyContent.value.trim();
   if (replyContent.value.length === 0) {
     message.info("请先输入内容");

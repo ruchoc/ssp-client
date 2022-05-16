@@ -11,7 +11,7 @@
       name="content"
       :rules="[{ required: true, message: '请输入分享内容', trigger: 'blur' }]"
     >
-      <a-textarea style="height: 200px" v-model:value="formState.content" />
+      <a-textarea :maxlength='300' style="height: 200px" v-model:value="formState.content" />
     </a-form-item>
     <a-form-item label="是否公开">
       <a-switch v-model:checked="checked"></a-switch>

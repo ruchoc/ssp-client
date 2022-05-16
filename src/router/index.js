@@ -8,7 +8,11 @@ import SearchShares from "@/pages/Home/SearchShares.vue";
 import Register from "@/pages/Register";
 import Login from "@/pages/Login";
 import User from "@/pages/User";
+
 import Admin from "@/pages/Admin";
+import UserManager from "@/pages/Admin/UserManager.vue";
+import BanSetting from "@/pages/Admin/BanSetting.vue";
+import AdminLogin from "@/pages/Admin/Login.vue";
 
 import PublishShare from "@/pages/User/PublishShare.vue";
 import PersonalInfo from "@/pages/User/PersonalInfo.vue";
@@ -65,6 +69,11 @@ const routes = [
     path: "/admin",
     name: "admin",
     component: Admin,
+    children: [
+      { path: "userManager", name: "userManager", component: UserManager },
+      { path: "banSetting", name: "banSetting", component: BanSetting },
+      { path: "login", name: "adminLogin", component: AdminLogin },
+    ],
   },
   {
     path: "/person",

@@ -6,10 +6,10 @@
       :beforeUpload="beforeUpload"
       multiple
       :showUploadList="{ showPreviewIcon: false }"
-      :maxCount="9"
+      :maxCount="6"
       @remove="onRemove"
     >
-      <div v-if="fileList.length < 9">
+      <div v-if="fileList.length < 6">
         <plus-outlined />
         <div style="margin-top: 8px">Upload</div>
       </div>
@@ -48,7 +48,7 @@ const onRemove = (file) => {
 };
 onMounted(() => {
   fileList.value = [];
-  if (pictureList.value.length == 0) return;
+  if (!pictureList.value || pictureList.value.length == 0) return;
   pictureList.value.forEach((pic) => {
     const file = {
       uid: pic.id,

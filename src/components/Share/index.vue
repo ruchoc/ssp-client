@@ -64,6 +64,7 @@
     <div class="comment clearfix">
       <a-textarea
         v-model:value="commentContent"
+        :maxlength='100'
         placeholder="输入内容"
       ></a-textarea>
       <a-button type="primary" @click="onPublishComment">发表</a-button>
@@ -132,6 +133,10 @@ const pageChange = () => {
   getCommentPage();
 };
 const onPublishComment = async () => {
+  if (!userData.isLogin) {
+    message.info("请先登录");
+    return;
+  }
   commentContent.value = commentContent.value.trim();
   if (commentContent.value.length === 0) {
     message.info("请先输入内容");

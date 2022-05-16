@@ -1,12 +1,14 @@
 import axios from "@/global/axios";
 import { reactive } from "vue";
 import { isEmptyObject } from "@/global/utils";
+import {pageSize} from '@/global/config'
 
 const userData = reactive({
   isLogin: true,
   userBasicInfo: {},
   userInfo: {},
-  searchUserList: [],
+  userList: [],
+  userTotal:0,
   searchBasicInfo: {},
   searchInfo: {},
 });
@@ -41,6 +43,7 @@ async function getCurrentUser() {
   // console.log(res);
   const { data } = res;
   userData.userBasicInfo = { ...data };
+  return data
 }
 
 async function getCurrentUserInfo() {
@@ -57,11 +60,20 @@ async function getUser(id) {
   userData.searchBasicInfo = { ...data };
 }
 
-async function searchUser(name) {
-  const res = await axios.get(`/user/searchuser?username=${name}`);
+async function searchUser(name,begin,length) {
+  begin--;
+  begin *= pageSize;
+  const res = await axios.get(`/user/searchuser?username=${name}&begin=${begin}&length=${length}`);
   // console.log(res);
   const { data } = res;
-  userData.searchUserList = data;
+  userData.userList = data;
+}
+
+async function getSearchUserTotal(name) {
+  const res = await axios.get(`/user/getsearchusernum?username=${name}`);
+  // console.log(res);
+  const { data } = res;
+  userData.userTotal = data;
 }
 
 async function getUserInfo(id) {
@@ -109,6 +121,7 @@ export {
   updatePassword,
   updateUserInfo,
   searchUser,
+  getSearchUserTotal,
   getAvatarUrl,
   logout,
   whetherLogin,

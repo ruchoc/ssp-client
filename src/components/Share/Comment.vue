@@ -36,6 +36,7 @@
   >
     <a-textarea
       v-model:value="replyContent"
+      :maxlength='100'
       placeholder="输入内容"
     ></a-textarea>
   </a-modal>
@@ -44,8 +45,8 @@
       v-for="reply in replyData.replyList"
       :key="reply.id"
       :reply="reply"
-			:commentId='comment.id'
-			@reply='pageChange'
+      :commentId="comment.id"
+      @reply="pageChange"
     ></Reply>
     <div class="clearfix">
       <div class="pagination">
@@ -54,7 +55,7 @@
           v-model:total="total"
           v-model:pageSize="pageSize"
           show-less-items
-					hideOnSinglePage
+          hideOnSinglePage
           @change="pageChange"
         />
       </div>
@@ -66,7 +67,7 @@
 import Reply from "./Reply.vue";
 import dayjs from "@/global/dayjs";
 import { defineProps, onMounted, ref, toRefs } from "vue";
-import { getAvatarUrl } from "@/hooks/user";
+import { getAvatarUrl, userData } from "@/hooks/user";
 import {
   getReply,
   publishReply,
@@ -96,7 +97,7 @@ const getReplyPage = async () => {
   replyModalVisible.value = true;
   try {
     await getReply(comment.value.id, current.value, pageSize);
-		await getReplyTotal(comment.value.id);
+    await getReplyTotal(comment.value.id);
     total.value = replyData.replyTotal;
   } catch (err) {
     console.error(err);
@@ -104,16 +105,17 @@ const getReplyPage = async () => {
   }
 };
 const onReply = async () => {
+  if (!userData.isLogin) {
+    message.info("请先登录");
+    return;
+  }
   replyContent.value = replyContent.value.trim();
   if (replyContent.value.length === 0) {
     message.info("请先输入内容");
     return;
   }
   try {
-    await publishReply(
-      replyContent.value,
-			comment.value.id,
-    );
+    await publishReply(replyContent.value, comment.value.id);
     total.value++;
   } catch (err) {
     console.error(err);

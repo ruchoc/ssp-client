@@ -58,15 +58,17 @@ import {
   logout,
   whetherLogin,
 } from "@/hooks/user";
-function signout() {
+import { whetherLogin as whetherAdmin } from "@/hooks/admin";
+async function signout() {
   try {
-    logout();
+    await logout();
   } catch (err) {
     console.error(err);
     message.error("登出错误");
   }
 }
 onMounted(async () => {
+  if (await whetherAdmin()) await signout();
   if (await whetherLogin()) userData.isLogin = true;
   else userData.isLogin = false;
 });

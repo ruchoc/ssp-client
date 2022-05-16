@@ -1,7 +1,7 @@
 <template>
   <a-tabs v-model:activeKey="activeKey" centered>
     <a-tab-pane key="1" tab="我的关注"
-      ><a-space direction="vertical">
+      ><a-space direction="vertical" style="width:100%">
         <a-card
           style="min-width: 480px"
           :bodyStyle="{ width: '100%' }"
