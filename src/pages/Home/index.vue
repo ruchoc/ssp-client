@@ -54,9 +54,6 @@ const hotSearch = ref([]);
 const onHotSearch = (content) => {
   searchText.value = content;
   search();
-  nextTick(async () => {
-    hotSearch.value = await getHotSearch();
-  });
 };
 onMounted(async () => {
   try {

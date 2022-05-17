@@ -38,17 +38,13 @@ watch(
   () => route.query.content,
   (value) => {
     content.value = value;
-    getSharePage();
   }
 );
+watch(content, (_) => {
+  getSharePage();
+});
 onMounted(() => {
-  try {
-    content.value = route.query.content;
-    getSharePage();
-  } catch (err) {
-    console.error(err);
-    message.error("获取分享列表失败");
-  }
+  content.value = route.query.content;
 });
 const getSharePage = async () => {
   if (!content.value) return;
