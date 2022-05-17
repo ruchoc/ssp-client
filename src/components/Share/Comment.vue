@@ -36,13 +36,13 @@
   >
     <a-textarea
       v-model:value="replyContent"
-      :maxlength='100'
+      :maxlength="100"
       placeholder="输入内容"
     ></a-textarea>
   </a-modal>
   <a-modal v-model:visible="replyModalVisible" title="回复列表" :footer="null">
     <Reply
-      v-for="reply in replyData.replyList"
+      v-for="reply in replyList"
       :key="reply.id"
       :reply="reply"
       :commentId="comment.id"
@@ -89,6 +89,7 @@ const replyContent = ref("");
 const replyModalVisible = ref(false);
 const current = ref(1);
 const total = ref(0);
+const replyList = ref([]);
 
 const pageChange = () => {
   getReplyPage();
@@ -96,9 +97,8 @@ const pageChange = () => {
 const getReplyPage = async () => {
   replyModalVisible.value = true;
   try {
-    await getReply(comment.value.id, current.value, pageSize);
-    await getReplyTotal(comment.value.id);
-    total.value = replyData.replyTotal;
+    replyList.value = await getReply(comment.value.id, current.value, pageSize);
+    total.value = await getReplyTotal(comment.value.id);
   } catch (err) {
     console.error(err);
     message.error("获取回复信息失败");

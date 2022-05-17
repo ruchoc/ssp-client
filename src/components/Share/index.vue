@@ -70,7 +70,7 @@
       <a-button type="primary" @click="onPublishComment">发表</a-button>
     </div>
     <Comment
-      v-for="comment in commentData.commentList"
+      v-for="comment in commentList"
       :key="comment.id"
       :comment="comment"
     ></Comment>
@@ -123,11 +123,11 @@ const commentVisible = ref(false);
 const commentContent = ref("");
 const current = ref(1);
 const total = ref(0);
+const commentList=ref([])
 
 const getCommentPage = async () => {
-  await getComment(share.value.id, current.value, pageSize);
-  await getCommentTotal(share.value.id);
-  total.value = commentData.commentTotal;
+  commentList.value= await getComment(share.value.id, current.value, pageSize);
+  total.value= await getCommentTotal(share.value.id);
 };
 const pageChange = () => {
   getCommentPage();
