@@ -19,7 +19,7 @@ import { message } from "ant-design-vue";
 
 let imageUrl = ref("");
 imageUrl.value = getAvatarUrl();
-let avatar,isPass
+let avatar, isPass;
 
 const beforeUpload = async (file) => {
   const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png";
@@ -35,14 +35,14 @@ const beforeUpload = async (file) => {
     imageUrl.value = await getBase64(file);
     isPass = true;
   }
-  avatar=file
+  avatar = file;
   return false;
 };
 
 const handleUpload = async () => {
-  if (!isPass||avatar) {
-    isPass=true
-    return
+  if (!isPass || !avatar) {
+    isPass = true;
+    return;
   }
   if (!userData.isLogin) {
     message.error("您尚未登录");
