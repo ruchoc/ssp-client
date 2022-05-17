@@ -1,2 +1,4 @@
-const pageSize=10
-export {pageSize}
+const pageSize = 10;
+const proxyPath = "/api";
+
+export { pageSize, proxyPath };

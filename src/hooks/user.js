@@ -1,14 +1,14 @@
 import axios from "@/global/axios";
 import { reactive } from "vue";
 import { isEmptyObject } from "@/global/utils";
-import {pageSize} from '@/global/config'
+import { pageSize, proxyPath } from "@/global/config";
 
 const userData = reactive({
   isLogin: true,
   userBasicInfo: {},
   userInfo: {},
   userList: [],
-  userTotal:0,
+  userTotal: 0,
   searchBasicInfo: {},
   searchInfo: {},
 });
@@ -43,7 +43,7 @@ async function getCurrentUser() {
   // console.log(res);
   const { data } = res;
   userData.userBasicInfo = { ...data };
-  return data
+  return data;
 }
 
 async function getCurrentUserInfo() {
@@ -60,10 +60,12 @@ async function getUser(id) {
   userData.searchBasicInfo = { ...data };
 }
 
-async function searchUser(name,begin,length) {
+async function searchUser(name, begin, length) {
   begin--;
   begin *= pageSize;
-  const res = await axios.get(`/user/searchuser?username=${name}&begin=${begin}&length=${length}`);
+  const res = await axios.get(
+    `/user/searchuser?username=${name}&begin=${begin}&length=${length}`
+  );
   // console.log(res);
   const { data } = res;
   userData.userList = data;
@@ -98,7 +100,7 @@ async function updatePassword(password) {
   // console.log(res);
 }
 
-const avatarPathPrefix = "/api/file/get?url=";
+const avatarPathPrefix = proxyPath + "/file/get?url=";
 function getAvatarUrl(url = "") {
   if (!url) return avatarPathPrefix + userData.userInfo.avatarUrl;
   return avatarPathPrefix + url;

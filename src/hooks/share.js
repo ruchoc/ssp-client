@@ -1,6 +1,6 @@
 import { reactive } from "vue";
 import axios from "@/global/axios";
-import { pageSize } from "@/global/config";
+import { pageSize, proxyPath } from "@/global/config";
 
 const shareData = reactive({
   shareList: [],
@@ -80,7 +80,7 @@ async function getHotSearch(content) {
   const res = await axios.get("/hotsearch/getlist");
   // console.log(res);
   const { data } = res;
-  return data
+  return data;
 }
 
 async function publishShare(share) {
@@ -110,7 +110,7 @@ async function setShareState(id, state) {
   // console.log(res);
 }
 
-const ImagePathPrefix = "/api/file/get?url=";
+const ImagePathPrefix = proxyPath + "/file/get?url=";
 function getImageUrl(url) {
   return ImagePathPrefix + url;
 }
