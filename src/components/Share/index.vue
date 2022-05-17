@@ -38,8 +38,7 @@
             <a-image
               v-for="pic in share.pictureList"
               :key="pic.id"
-              :height="80"
-              :width="80"
+              :width="200"
               :src="getImageUrl(pic.url)"
             />
           </a-image-preview-group>
@@ -232,6 +231,7 @@ const cancleCollect = async () => {
 .imageBox {
   display: flex;
   gap: 8px;
+  flex-wrap: wrap;
 }
 .time {
   float: right;

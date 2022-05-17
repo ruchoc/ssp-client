@@ -1,7 +1,10 @@
 <template>
   <a-layout class="layout">
     <a-layout-header>
-      <home-filled @click="$router.push('/allShares')" style="font-size: 32px" />
+      <home-filled
+        @click="$router.push('/allShares')"
+        style="font-size: 32px"
+      />
       <a-dropdown :trigger="['click']">
         <a-input-search
           v-model:value="searchText"
@@ -36,7 +39,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref, watch } from "vue";
+import { nextTick, onMounted, ref, watch } from "vue";
 import { message } from "ant-design-vue";
 import { HomeFilled } from "@ant-design/icons-vue";
 import UserBox from "@/components/UserBox";
@@ -48,10 +51,13 @@ const selectedKeys = ref(["all"]);
 const $router = useRouter();
 const hotSearch = ref([]);
 
-const onHotSearch=(content)=>{
-  searchText.value=content
-  search()
-}
+const onHotSearch = (content) => {
+  searchText.value = content;
+  search();
+  nextTick(async () => {
+    hotSearch.value = await getHotSearch();
+  });
+};
 onMounted(async () => {
   try {
     hotSearch.value = await getHotSearch();
