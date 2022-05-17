@@ -25,27 +25,34 @@
 import { pageSize } from "@/global/config";
 import Share from "@/components/Share";
 import { shareData, searchShare, getSearchShareTotal } from "@/hooks/share";
-import { onMounted, ref } from "@vue/runtime-core";
+import { onMounted, ref, watch } from "@vue/runtime-core";
 import { useRoute } from "vue-router";
-import {message} from 'ant-design-vue'
+import { message } from "ant-design-vue";
 
 const route = useRoute();
 const current = ref(1);
 const total = ref(0);
-const content=ref('')
+const content = ref("");
 
+watch(
+  () => route.query.content,
+  (value) => {
+    content.value = value;
+    getSharePage();
+  }
+);
 onMounted(() => {
   try {
     content.value = route.query.content;
-		getSharePage();	
+    getSharePage();
   } catch (err) {
     console.error(err);
     message.error("获取分享列表失败");
   }
 });
 const getSharePage = async () => {
-	if(!content.value) return
-  await searchShare(current.value, pageSize,content.value);
+  if (!content.value) return;
+  await searchShare(current.value, pageSize, content.value);
   await getSearchShareTotal();
   total.value = shareData.shareTotal;
 };

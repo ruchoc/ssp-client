@@ -16,7 +16,7 @@
         >{{ share.username }}
         <div class="time">
           <a-tooltip :title="dayjs(share.time).format('YYYY-MM-DD HH:mm:ss')">
-            <span>{{ dayjs().fromNow() }}</span>
+            <span>{{ dayjs(share.time).fromNow() }}</span>
           </a-tooltip>
         </div>
       </template>

@@ -32,6 +32,7 @@ const current = ref(1);
 const total = ref(0);
 onMounted(() => {
   getSharePage();
+  console.log(shareData);
 });
 const getSharePage = async () => {
   try {

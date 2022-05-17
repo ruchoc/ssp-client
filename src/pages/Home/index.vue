@@ -1,7 +1,7 @@
 <template>
   <a-layout class="layout">
     <a-layout-header>
-      <home-filled @click="$router.push('/')" style="font-size: 32px" />
+      <home-filled @click="$router.push('/allShares')" style="font-size: 32px" />
       <a-dropdown :trigger="['click']">
         <a-input-search
           v-model:value="searchText"
@@ -12,7 +12,7 @@
         <template #overlay>
           <a-menu>
             <a-menu-item
-              @click="searchText = item.content"
+              @click="onHotSearch(item.content)"
               v-for="(item, index) in hotSearch"
               :key="index"
             >
@@ -48,6 +48,10 @@ const selectedKeys = ref(["all"]);
 const $router = useRouter();
 const hotSearch = ref([]);
 
+const onHotSearch=(content)=>{
+  searchText.value=content
+  search()
+}
 onMounted(async () => {
   try {
     hotSearch.value = await getHotSearch();

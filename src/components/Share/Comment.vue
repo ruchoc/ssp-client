@@ -19,7 +19,7 @@
     </template>
     <template #datetime>
       <a-tooltip :title="dayjs(comment.time).format('YYYY-MM-DD HH:mm:ss')">
-        <span>{{ dayjs().fromNow() }}</span>
+        <span>{{ dayjs(comment.time).fromNow() }}</span>
       </a-tooltip>
     </template>
     <template #actions>
