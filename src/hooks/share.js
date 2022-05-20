@@ -34,6 +34,7 @@ async function getNewestShareList(begin, length) {
   // console.log(res);
   const { data } = res;
   shareData.shareList = data;
+  return data
 }
 
 async function getFavoriteShareList(begin, length) {
@@ -45,6 +46,7 @@ async function getFavoriteShareList(begin, length) {
   // console.log(res);
   const { data } = res;
   shareData.shareList = data;
+  return data
 }
 
 async function getMyShareList(begin, length) {

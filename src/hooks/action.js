@@ -21,6 +21,13 @@ async function deleteLike(shareId) {
   // console.log(res);
 }
 
+async function getLikeUserList(shareId) {
+  const res = await axios.get(`/like/getlist/?shareId=${shareId}`);
+  // console.log(res);
+  const { data } = res;
+  return data;
+}
+
 async function publishComment(shareId, content) {
   const res = await axios.post("/comment/publish", { shareId, content });
   // console.log(res);
@@ -35,7 +42,7 @@ async function getComment(shareId, begin, length) {
   // console.log(res);
   const { data } = res;
   commentData.commentList = data;
-  return data
+  return data;
 }
 
 async function getCommentTotal(shareId) {
@@ -43,7 +50,7 @@ async function getCommentTotal(shareId) {
   // console.log(res);
   const { data } = res;
   commentData.commentTotal = data;
-  return data
+  return data;
 }
 
 async function publishReply(content, commentId, acceptUserId) {
@@ -64,7 +71,7 @@ async function getReply(commentId, begin, length) {
   // console.log(res);
   const { data } = res;
   replyData.replyList = data;
-  return data
+  return data;
 }
 
 async function getReplyTotal(commentId) {
@@ -72,12 +79,13 @@ async function getReplyTotal(commentId) {
   // console.log(res);
   const { data } = res;
   replyData.replyTotal = data;
-  return data
+  return data;
 }
 
 export {
   commentData,
   replyData,
+  getLikeUserList,
   deleteLike,
   getCommentTotal,
   getReplyTotal,

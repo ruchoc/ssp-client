@@ -19,15 +19,24 @@
               v-for="(item, index) in hotSearch"
               :key="index"
             >
-              <span class="hot-search">{{ item.content }}</span>
-              <span>{{ item.times }}次</span>
+              <div class="hot-box">
+                <span :class="{ 'hot-order': true, 'top-3': index < 3 }">{{
+                  index + 1
+                }}</span>
+                <span class="hot-content">{{ item.content }}</span>
+                <span class="hot-times">{{ item.times }}次</span>
+              </div>
             </a-menu-item>
           </a-menu>
         </template>
       </a-dropdown>
-      <UserBox></UserBox>
+      <UserBox />
     </a-layout-header>
     <a-layout-content>
+      <div class="card-box">
+        <Card style="margin-bottom:20px" title="最受欢迎" :isNewest="false" />
+        <Card title="最新分享" :isNewest="true" />
+      </div>
       <a-menu v-model:selectedKeys="selectedKeys" mode="horizontal">
         <a-menu-item key="all"> 全部 </a-menu-item>
         <a-menu-item key="new"> 最新 </a-menu-item>
@@ -39,6 +48,7 @@
 </template>
 
 <script setup>
+import Card from "@/components/Card";
 import { nextTick, onMounted, ref, watch } from "vue";
 import { message } from "ant-design-vue";
 import { HomeFilled } from "@ant-design/icons-vue";
@@ -102,14 +112,46 @@ watch(
 
   .ant-layout-content {
     background-color: #fff;
-    padding: 25px 15%;
+    padding: 25px 30% 0 10%;
+    position: relative;
+  }
+
+  .card-box {
+    width: 21%;
+    position: fixed;
+    right: 7%;
+    top: 85px;
   }
 }
 
-.hot-search {
-  display: inline-block;
-  width: 80px;
-  padding-right: 20px;
-  overflow: hidden;
+.hot-box {
+  display: flex;
+  justify-items: center;
+  font-size: 16px;
+
+  .hot-times {
+    padding-left: 16px;
+    color: #aaa;
+    font-size: 14px;
+  }
+
+  .hot-content {
+    font-weight: 450;
+    color: #666;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 500px;
+  }
+
+  .hot-order {
+    padding-right: 10px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #ff8b11;
+  }
+  .hot-order.top-3 {
+    color: #f26d5f;
+  }
 }
 </style>

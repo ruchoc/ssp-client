@@ -16,13 +16,13 @@
             />
           </template>
           <template #content>
-            <p>
+            <p class="content">
               {{ item.content }}
             </p>
           </template>
           <template #datetime>
             <a-tooltip :title="dayjs(item.time).format('YYYY-MM-DD HH:mm:ss')">
-              <span>{{ dayjs().fromNow() }}</span>
+              <span>{{ dayjs(item.time).fromNow() }}</span>
             </a-tooltip>
           </template>
           <template #actions>
@@ -34,6 +34,9 @@
                 })
               "
               >详情</span
+            >
+            <span @click="openLikeDetail(item.id)" style="padding-left: 16px"
+              >点赞：{{ item.likeNum }}</span
             >
           </template>
           <div class="but-box">
@@ -85,12 +88,42 @@
         <a-switch v-model:checked="checked"></a-switch>
       </a-form-item>
       <a-form-item label="上传图片">
-        <Image v-if="modalVisible" ref="image" :pictureList='formState.pictureList'></Image>
+        <Image
+          v-if="modalVisible"
+          ref="image"
+          :pictureList="formState.pictureList"
+        ></Image>
       </a-form-item>
     </a-form>
   </a-modal>
+  <a-drawer
+    v-model:visible="drawerVisible"
+    title="点赞的用户"
+    placement="right"
+    :closable="false"
+  >
+    <a-list item-layout="horizontal" :data-source="likeUserList">
+      <template #renderItem="{ item }">
+        <a-list-item>
+          <a-list-item-meta>
+            <template #title>
+              <span class="username">{{ item.username }}</span>
+            </template>
+            <template #avatar>
+              <router-link
+                target="_blank"
+                :to="{ name: 'person', query: { id: item.userId } }"
+                ><a-avatar :src="getAvatarUrl(item.avatarUrl)"
+              /></router-link>
+            </template>
+          </a-list-item-meta>
+        </a-list-item>
+      </template>
+    </a-list>
+  </a-drawer>
 </template>
 <script setup>
+import { getLikeUserList } from "@/hooks/action";
 import Image from "@/components/Update/Image.vue";
 import dayjs from "@/global/dayjs";
 import { onMounted, ref, reactive, computed } from "vue";
@@ -106,6 +139,8 @@ import { message } from "ant-design-vue";
 import { pageSize } from "@/global/config";
 import { getAvatarUrl, userData } from "@/hooks/user";
 
+const likeUserList = ref([]);
+const drawerVisible = ref(false);
 const checked = computed({
   get() {
     return formState.state !== "private";
@@ -118,18 +153,28 @@ const formState = reactive({
   id: "",
   content: "",
   state: "public",
-  pictureList:[],
+  pictureList: [],
 });
 const current = ref(1);
 const modalVisible = ref(false);
 const form = ref(null);
 const image = ref(null);
 
+const openLikeDetail = async (shareId) => {
+  try {
+    likeUserList.value = await getLikeUserList(shareId);
+    console.log(likeUserList.value);
+    drawerVisible.value = true;
+  } catch (err) {
+    console.error(err);
+    message.error("获取点赞信息失败");
+  }
+};
 const openModal = (share) => {
   formState.id = share.id;
   formState.content = share.content;
   formState.state = share.state;
-  formState.pictureList=share.pictureList
+  formState.pictureList = share.pictureList;
   modalVisible.value = true;
 };
 const onEdit = async () => {
@@ -189,6 +234,13 @@ onMounted(() => {
 </script>
 
 <style lang="less" scoped>
+.username {
+  position: relative;
+  top: 5px;
+}
+.content {
+  margin-right: 160px;
+}
 .pagination {
   float: right;
   padding: 16px 0 125px;

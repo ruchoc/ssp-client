@@ -16,13 +16,13 @@
             />
           </template>
           <template #content>
-            <p>
+            <p class="content">
               {{ item.content }}
             </p>
           </template>
           <template #datetime>
             <a-tooltip :title="dayjs(item.time).format('YYYY-MM-DD HH:mm:ss')">
-              <span>{{ dayjs().fromNow() }}</span>
+              <span>{{ dayjs(item.time).fromNow() }}</span>
             </a-tooltip>
           </template>
           <template #actions>
@@ -60,7 +60,7 @@
         v-model:pageSize="pageSize"
         show-less-items
         @change="pageChange"
-				hideOnSinglePage
+        hideOnSinglePage
       />
     </div>
   </div>
@@ -129,6 +129,9 @@ onMounted(() => {
 </script>
 
 <style lang="less" scoped>
+.content {
+  margin-right: 160px;
+}
 .pagination {
   float: right;
   padding: 16px 0 125px;

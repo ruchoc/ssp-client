@@ -23,7 +23,11 @@
       <template #description
         ><p
           class="share-content"
-          style="cursor: pointer"
+          style="
+            cursor: pointer;
+            word-wrap: break-word;
+            white-space: normal !important;
+          "
           @click="
             $router.push({
               path: '/share',
@@ -63,7 +67,7 @@
     <div class="comment clearfix">
       <a-textarea
         v-model:value="commentContent"
-        :maxlength='100'
+        :maxlength="100"
         placeholder="输入内容"
       ></a-textarea>
       <a-button type="primary" @click="onPublishComment">发表</a-button>
@@ -122,11 +126,11 @@ const commentVisible = ref(false);
 const commentContent = ref("");
 const current = ref(1);
 const total = ref(0);
-const commentList=ref([])
+const commentList = ref([]);
 
 const getCommentPage = async () => {
-  commentList.value= await getComment(share.value.id, current.value, pageSize);
-  total.value= await getCommentTotal(share.value.id);
+  commentList.value = await getComment(share.value.id, current.value, pageSize);
+  total.value = await getCommentTotal(share.value.id);
 };
 const pageChange = () => {
   getCommentPage();
