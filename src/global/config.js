@@ -1,5 +1,7 @@
 const pageSize = 10;
-const proxyPath = "/api";
-// const proxyPath = "";
+const listLength = 3;
 
-export { pageSize, proxyPath };
+// const proxyPath = "/api";
+const proxyPath = "";
+
+export { pageSize, listLength, proxyPath };

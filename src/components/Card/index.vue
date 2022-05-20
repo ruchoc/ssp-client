@@ -42,6 +42,7 @@ import {
 } from "@/hooks/share";
 import { message } from "ant-design-vue";
 import dayjs from "@/global/dayjs";
+import { listLength } from "@/global/config";
 
 const props = defineProps({
   title: {
@@ -55,7 +56,6 @@ const props = defineProps({
 });
 const { title, isNewest } = toRefs(props);
 const dataSource = ref([]);
-const listLength = 3;
 
 onMounted(async () => {
   try {
