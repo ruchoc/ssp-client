@@ -31,8 +31,7 @@ async function getFans() {
   followData.fanList = data;
 }
 
-const isIdol = async (id) => {
-  await getIdols();
+const isIdol = (id) => {
   return followData.idolList.findIndex((user) => user.userId == id) >= 0;
 };
 

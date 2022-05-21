@@ -56,16 +56,17 @@ import { useRoute } from "vue-router";
 import { onMounted, ref } from "@vue/runtime-core";
 import { userData, getUser, getUserInfo, getAvatarUrl } from "@/hooks/user";
 import { message } from "ant-design-vue";
-import { isIdol, onFollow, offFollow } from "@/hooks/follow";
+import { isIdol, onFollow, offFollow, getIdols } from "@/hooks/follow";
 import dayjs from "dayjs";
 
 const route = useRoute();
 const id = ref("");
-onMounted(() => {
+onMounted(async () => {
   try {
     id.value = route.query.id;
-    getUser(id.value);
-    getUserInfo(id.value);
+    await getUser(id.value);
+    await getUserInfo(id.value);
+    await getIdols();
   } catch (err) {
     console.error(err);
     message.error("获取账号信息失败");

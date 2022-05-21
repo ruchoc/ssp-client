@@ -70,9 +70,9 @@ import { pageSize } from "@/global/config";
 const current = ref(1);
 const searchText = ref("");
 
-onMounted(() => {
+onMounted(async () => {
   try {
-    getIdols();
+    await getIdols();
   } catch (err) {
     console.error(err);
     message.error("获取关注信息失败");

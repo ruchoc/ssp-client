@@ -81,10 +81,10 @@ import {
 import { message } from "ant-design-vue";
 
 const activeKey = ref("1");
-onMounted(() => {
+onMounted(async () => {
   try {
-    getIdols();
-    getFans();
+    await getIdols();
+    await getFans();
   } catch (err) {
     console.error(err);
     message.error("获取关注信息失败");
